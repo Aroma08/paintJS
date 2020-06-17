@@ -38,12 +38,16 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const LWrange = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBT = document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
 
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
+
+ctx.fillStyle = "white";
+ctx.fillRect(0,0, INITIAL_COLOR,INITIAL_COLOR);
 
 ctx.strokeStyle = INITIAL_COLOR;
 ctx.fillStyle = INITIAL_COLOR;
@@ -106,8 +110,23 @@ function HandleCanvasClick()
     {
         ctx.fillRect(0,0,CANVAS_SIZE,CANVAS_SIZE);
     }else{
-        
+
     }
+}
+
+function HandleCM(event)
+{
+    event.preventDefault();
+}
+
+function SaveImg()
+{
+    const image = canvas.toDataURL();
+    const link = document.createElement("a"); //다운로드 하라는 속성임. "a"
+    
+    link.href = image;
+    link.download = "PaintJS[FirstJS]";
+    link.click();
 }
 
 if(canvas)
@@ -117,6 +136,7 @@ if(canvas)
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("click", HandleCanvasClick);
+    canvas.addEventListener("contextmenu", HandleCM);
 }
 
 Array.from(colors).forEach(color => color.addEventListener("click",HandleColor));
@@ -129,4 +149,9 @@ if(LWrange)
 if(mode)
 {
     mode.addEventListener("click", HandleMode);
+}
+
+if(saveBT)
+{
+    saveBT.addEventListener("click",SaveImg);
 }
